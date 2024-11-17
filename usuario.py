@@ -166,5 +166,6 @@ def cargar_histogramas(usuario):
                     300,  # y2
                     fill="skyblue"
                 )
-
+    
     ventana1.mainloop()
+#cargar_histogramas(usuario="pepi")
