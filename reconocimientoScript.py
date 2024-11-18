@@ -10,9 +10,7 @@ def userFound():
     interfazUsuario.show_profile_window()
     print("user found")"""
     
-def recognize():
-    
-    user = "1"
+def recognize(userValidate, validation):
     dataPath = 'D:/UPC2024-2/IA/2 corte/reconocimientoFacial/data'  # ruta  Data
     imagePaths = os.listdir(dataPath)
     print('imagePaths=', imagePaths)
@@ -29,9 +27,9 @@ def recognize():
 
     # Configuración de la ventana
     cv2.namedWindow('frame', cv2.WINDOW_NORMAL)
-    screen_width = 1376  # Cambia según la resolución de tu pantalla
-    screen_height = 768  # Cambia según la resolución de tu pantalla
-    window_width = 900  # Ancho de la ventana de OpenCV
+    screen_width = 600  # Cambia según la resolución de tu pantalla
+    screen_height = 600  # Cambia según la resolución de tu pantalla
+    window_width = 600  # Ancho de la ventana de OpenCV
     window_height = 600  # Alto de la ventana de OpenCV
 
     # Calcula la posición para centrar la ventana
@@ -66,14 +64,27 @@ def recognize():
                 cv2.putText(frame, '{}'.format(imagePaths[result[0]]), (x, y - 25), 2, 1.1, (0, 255, 0), 1, cv2.LINE_AA)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 print(f"Persona reconocida: {imagePaths[result[0]]}")
-                messagebox.showinfo("Resultado", f"Reconocimiento facial exitoso, bienvenido {imagePaths[result[0]]}.")
-                cap.release()
-                cv2.destroyAllWindows()
-                usuario.cargar_histogramas(imagePaths[result[0]])
+                if validation:
+                    if userValidate==imagePaths[result[0]]:
+                        messagebox.showinfo("Resultado", f"Reconocimiento facial exitoso, bienvenido {imagePaths[result[0]]}.")
+                        print("histogramas")
+                        cap.release()
+                        cv2.destroyAllWindows()
+                        usuario.cargar_histogramas(imagePaths[result[0]])
+                        
+                        reconocida = True  # Marcar como reconocida
+
+                    else:
+                        print("error")
+                        messagebox.showinfo("Error", f"Usuario incorrecto, usted no es: {userValidate}.")
+                        cap.release()
+                        cv2.destroyAllWindows()
+                        
+                else:
+                    return
                 #threading.Thread(target=User, daemon=True).start() # type: ignore
                 #user_profile_window = UserProfileWindow(interfaz, imagePaths[result[0]])
                 
-                reconocida = True  # Marcar como reconocida
                 
                 print("Si")
                 print("no")
@@ -84,8 +95,12 @@ def recognize():
                 #break  # Salir del bucle de detección de rostros
             
             else:
-                cv2.putText(frame, 'Desconocido', (x, y - 20), 2, 0.8, (0, 0, 255), 1, cv2.LINE_AA)
-                cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                print("error")
+                messagebox.showinfo("Error", f"Usuario incorrecto, usted no es: {userValidate}.")
+                cap.release()
+                cv2.destroyAllWindows()
+                #cv2.putText(frame, 'Desconocido', (x, y - 20), 2, 0.8, (0, 0, 255), 1, cv2.LINE_AA)
+                #cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
     
 
         if reconocida:

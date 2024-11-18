@@ -7,6 +7,7 @@ import usuario
 import entrenandoRF
 from tkinter import messagebox
 import threading
+import pruebaReconocimiento
 import reconocimientoScript  # Asegúrate de que este script esté disponible en el mismo directorio
 
 
@@ -102,6 +103,10 @@ class LoginWindow(tk.Toplevel):
         # Botón Iniciar Sesión
         self.btn_login = tk.Button(self.frame, text="Iniciar Sesión", font=("Arial", 12), bg="#6fa8dc", fg="white", width=10, height=2, command=self.validate_login)
         self.btn_login.grid(row=3, column=0, padx=2, pady=10)
+        
+        # Botón Prueba
+        self.btn_prueba = tk.Button(self.frame, text="Prueba", font=("Arial", 12), bg="#6fa8dc", fg="white", width=10, height=2, command=lambda:pruebaReconocimiento.iniciar())
+        self.btn_prueba.grid(row=3, column=1, padx=2, pady=10)
      
     def validate_login(self):
         usuario = self.input_user.get()
@@ -133,12 +138,10 @@ class LoginWindow(tk.Toplevel):
         except Exception as e:
             messagebox.showerror("Error", f"No se pudo validar el usuario: {str(e)}")
 
-
-
     def start_recognition(self):
         user = self.input_user.get()
         # Llama a la función de reconocimiento facial en un hilo separado
-        reconocimientoScript.recognize()
+        reconocimientoScript.recognize(user, validation=True)
         
         #messagebox.showinfo("Resultado", "Reconocimiento facial exitoso.")
 
@@ -219,6 +222,14 @@ class RegisterWindow(tk.Toplevel):
     def register_user(self):
         contra = self.input_password.get()
         usuario = self.input_user.get()
+        """
+        if not self.input_user.get() or not self.input_password.get():
+            messagebox.showinfo("Error", "Usuario o contraseña inválidos.")
+        else:
+            messagebox.showinfo("Registro", "Usuario registrado exitosamente.")
+            capturandoRostros.prueba(self.input_user.get(), camara=True, video=None)
+        """
+        
         
         if not usuario or not contra:
             messagebox.showwarning("Error", "Por favor, complete todos los campos.")
@@ -244,6 +255,9 @@ class RegisterWindow(tk.Toplevel):
                 json.dump(user_data, file)
             # Aquí puedes guardar más información del usuario en su carpeta, como la contraseña
             # por ejemplo, en un archivo de texto cifrado.
+            capturandoRostros.prueba(usuario, camara=True, video=None)
+            #entrenandoRF.entrenando()
+            
             print(f"Usuario '{usuario}' registrado con éxito.")
             messagebox.showinfo("Registro", "Usuario registrado exitosamente.")
         except Exception as e:
@@ -252,9 +266,7 @@ class RegisterWindow(tk.Toplevel):
         print(usuario)
         print(contra)
         print("Registrando usuario...")
-        capturandoRostros.prueba(usuario, camara=True, video=None)
-        #entrenandoRF.entrenando()
-        messagebox.showinfo("Registro", "Usuario registrado exitosamente.")
+        
         
 
     def center_window(self):

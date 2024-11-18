@@ -4,15 +4,12 @@ import os
 from tkinter import messagebox
 import matplotlib.pyplot as plt
 
-
-# Paleta de colores
-PRIMARY_COLOR = "#ff9900"  # Naranja
-SECONDARY_COLOR = "#ffd966"  # Amarillo claro
-BACKGROUND_COLOR = "#ffffff"  # Blanco
-TEXT_COLOR = "#333333"  # Texto gris oscuro
+# Definición de colores y fuentes
+BACKGROUND_COLOR = "#f0f0f0"
+PRIMARY_COLOR = "#FFA45B"
+SECONDARY_COLOR = "#0078d4"
 
 def cargar_histogramas(usuario):
-    print("histogramas2")
     """
     Cargar y mostrar los histogramas (documentos de texto) de la carpeta de un usuario específico.
     """
@@ -27,10 +24,8 @@ def cargar_histogramas(usuario):
     ventana1.geometry("800x600")
     ventana1.title(f"Histogramas de {usuario}")
     ventana1.configure(bg=BACKGROUND_COLOR)
-
-    
-    # Centro la ventana en la pantalla
-    ventana1.eval('tk::PlaceWindow %s center' % ventana1.winfo_toplevel())
+    ventana1.resizable(False, False)
+    ventana1.eval('tk::PlaceWindow %s center' % ventana1.winfo_toplevel())  # Centrar la ventana
 
     # Contenedor para scroll
     container = ttk.Frame(ventana1, style="TFrame")
@@ -56,8 +51,7 @@ def cargar_histogramas(usuario):
 
     # Función para guardar las gráficas como imágenes en una carpeta
     def guardar_imagenes():
-        
-        #ventana1.destroy()
+        ventana1.destroy()
         messagebox.showinfo("Exito", "Espere unos momentos...")
 
         # Crear la carpeta de imágenes si no existe
@@ -155,7 +149,7 @@ def cargar_histogramas(usuario):
             frame.pack(pady=10, padx=10, fill="x")
 
             # Etiqueta para el nombre del archivo
-            lbl_nombre = tk.Label(frame, text=archivo, font=("Arial", 12, "bold"), fg="#0078d4")
+            lbl_nombre = tk.Label(frame, text=archivo, font=("Arial", 12, "bold"), fg=PRIMARY_COLOR)
             lbl_nombre.pack()
 
             # Crear un gráfico de barras utilizando Canvas de Tkinter
@@ -175,6 +169,6 @@ def cargar_histogramas(usuario):
                     300,  # y2
                     fill="skyblue"
                 )
-    
+
     ventana1.mainloop()
-#cargar_histogramas(usuario="pepi")
+cargar_histogramas(usuario="pepi")
