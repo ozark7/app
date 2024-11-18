@@ -10,7 +10,7 @@ def entrenar():
 def prueba(usuario, camara=False, video=None):
 
 	
-	dataPath = 'D:/UPC2024-2/IA/2 corte/reconocimientoFacial/data' #Cambia a la ruta donde hayas almacenado Data
+	dataPath = '../reconocimientoFacial/data' #Cambia a la ruta donde hayas almacenado Data
 	personPath = dataPath + '/' + usuario
 
 	if not os.path.exists(personPath):

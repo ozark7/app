@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 import threading
 from tkinter import ttk
+
 import capturandoRostros
 import usuario
 import entrenandoRF
@@ -119,7 +120,7 @@ class LoginWindow(tk.Toplevel):
             messagebox.showwarning("Error", "Por favor, complete todos los campos.")
             return
 
-        data_folder = f"D:/UPC2024-2/IA/2 corte/reconocimientoFacial/app/credentials/{usuario}"
+        data_folder = f"./app/credentials/{usuario}"
         user_file = os.path.join(data_folder, "info.json")
 
         if not os.path.exists(user_file):
@@ -227,7 +228,7 @@ class RegisterWindow(tk.Toplevel):
             return
 
         # Ruta donde se almacenan los datos de los usuarios
-        user_path = os.path.join("D:/UPC2024-2/IA/2 corte/reconocimientoFacial/app/credentials", usuario)
+        user_path = os.path.join("./credentials", usuario)
 
         # Verificar si el usuario ya existe
         if os.path.exists(user_path):
@@ -295,7 +296,7 @@ class RegisterWindow(tk.Toplevel):
 
         # Ruta donde se almacenan los datos de los usuarios (por ejemplo, la carpeta "data")
         
-        user_path = os.path.join("D:/UPC2024-2/IA/2 corte/reconocimientoFacial/app/credentials", usuario)
+        user_path = os.path.join("./app/credentials", usuario)
 
         # Verificar si el usuario ya existe
         if os.path.exists(user_path):

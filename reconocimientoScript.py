@@ -11,14 +11,14 @@ def userFound():
     print("user found")"""
     
 def recognize(userValidate, validation):
-    dataPath = 'D:/UPC2024-2/IA/2 corte/reconocimientoFacial/data'  # ruta  Data
+    dataPath = '../reconocimientoFacial/data'  # ruta  Data
     imagePaths = os.listdir(dataPath)
     print('imagePaths=', imagePaths)
 
     # reconocimiento de rostro
     face_recognizer = cv2.face.LBPHFaceRecognizer_create()
     # Leyendo el modelo
-    face_recognizer.read('D:/UPC2024-2/IA/2 corte/reconocimientoFacial/modeloLBPHFace.xml')
+    face_recognizer.read('../reconocimientoFacial/modeloLBPHFace.xml')
     # ====================================================================
     cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)  # VIDEO CAMARA
     #cap = cv2.VideoCapture(f'D:/UPC2024-2/IA/2 corte/reconocimientoFacial/users/{user}.mp4')#USUARIOS EXISTENTES

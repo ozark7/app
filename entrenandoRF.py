@@ -10,7 +10,7 @@ def entrenando():
     n_points = 8 * radius  # Puntos de vecinos para LBP
 
     # Rutas
-    dataPath = 'D:/UPC2024-2/IA/2 corte/reconocimientoFacial/data'  # Ruta donde están las imágenes de cada persona
+    dataPath = '../reconocimientoFacial/data'  # Ruta donde están las imágenes de cada persona
     outputPath = 'D:/UPC2024-2/IA/2 corte/reconocimientoFacial/histograms'  # Carpeta para guardar los histogramas
 
     # Crear la carpeta de histogramas si no existe
@@ -70,7 +70,7 @@ def entrenando():
     face_recognizer.train(facesData, np.array(labels))
 
     # Guardar el modelo entrenado
-    modelPath = 'D:/UPC2024-2/IA/2 corte/reconocimientoFacial/modeloLBPHFace.xml'
+    modelPath = '../reconocimientoFacial/modeloLBPHFace.xml'
     face_recognizer.write(modelPath)
     print(f"Modelo entrenado y guardado en {modelPath}")
     messagebox.showinfo("Correcto", "Usuario guardado correctamente")

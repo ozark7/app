@@ -1,7 +1,7 @@
 import cv2
 import os
 
-dataPath = 'D:/UPC2024-2/IA/2 corte/reconocimientoFacial/data'  # Cambia a la ruta donde hayas almacenado Data
+dataPath = '../reconocimientoFacial/data'  # Cambia a la ruta donde hayas almacenado Data
 imagePaths = os.listdir(dataPath)
 print('imagePaths=', imagePaths)
 
@@ -19,7 +19,7 @@ def iniciar():
 
     # Cargar el modelo LBPH
     face_recognizer = cv2.face.LBPHFaceRecognizer_create()  # Inicializa el modelo LBPH
-    face_recognizer.read('D:/UPC2024-2/IA/2 corte/reconocimientoFacial/modeloLBPHFace.xml')  # Carga el modelo previamente entrenado
+    face_recognizer.read('../reconocimientoFacial/modeloLBPHFace.xml')  # Carga el modelo previamente entrenado
 
     while True:
         ret, frame = cap.read()

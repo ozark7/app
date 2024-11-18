@@ -16,8 +16,9 @@ def cargar_histogramas(usuario):
     """
     Cargar y mostrar los histogramas (documentos de texto) de la carpeta de un usuario específico.
     """
-    url = "D:/UPC2024-2/IA/2 corte/reconocimientoFacial/histograms/" + usuario
-    carpeta_usuario = os.path.join("carpeta_histogramas", url)  
+    url = "../reconocimientoFacial/histograms/" + usuario
+    carpeta_usuario = url
+  
     if not os.path.exists(carpeta_usuario):
         print(f"La carpeta para el usuario '{usuario}' no existe.")
         return
