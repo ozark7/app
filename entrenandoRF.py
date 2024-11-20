@@ -10,14 +10,14 @@ def entrenando():
     n_points = 8 * radius  # Puntos de vecinos para LBP
 
     # Rutas
-    dataPath = '../reconocimientoFacial/data'  # Ruta donde están las imágenes de cada persona
-    outputPath = 'D:/UPC2024-2/IA/2 corte/reconocimientoFacial/histograms'  # Carpeta para guardar los histogramas
+    dataPath = '../reconocimientoFacial/data'  
+    outputPath = '../reconocimientoFacial/histograms' 
 
-    # Crear la carpeta de histogramas si no existe
+    # si no existe
     if not os.path.exists(outputPath):
         os.makedirs(outputPath)
 
-    # Obtener la lista de personas (carpetas en dataPath)
+    # lista de personas (dataPath)
     peopleList = os.listdir(dataPath)
     print('Lista de personas:', peopleList)
 
@@ -62,10 +62,10 @@ def entrenando():
         
         label += 1
 
-    # Crear el modelo de reconocimiento LBPH de OpenCV
+    # LBPH de OpenCV
     face_recognizer = cv2.face.LBPHFaceRecognizer_create()
 
-    # Entrenar el modelo con las imágenes y etiquetas obtenidas
+    # Entrenar el modelo
     print("Entrenando el modelo LBPH...")
     face_recognizer.train(facesData, np.array(labels))
 

@@ -27,21 +27,19 @@ def recognize(userValidate, validation):
 
     # Configuración de la ventana
     cv2.namedWindow('frame', cv2.WINDOW_NORMAL)
-    screen_width = 600  # Cambia según la resolución de tu pantalla
-    screen_height = 600  # Cambia según la resolución de tu pantalla
-    window_width = 600  # Ancho de la ventana de OpenCV
-    window_height = 600  # Alto de la ventana de OpenCV
-
-    # Calcula la posición para centrar la ventana
+    screen_width = 600  
+    screen_height = 600  
+    window_width = 600  
+    window_height = 600  
+    #la ventana
     pos_x = (screen_width - window_width) // 2
     pos_y = (screen_height - window_height) // 2
 
-    # Mueve la ventana al centro
     cv2.resizeWindow('frame', window_width, window_height)
     cv2.moveWindow('frame', pos_x, pos_y)
     
         
-    reconocida = False  # Inicializar como no reconocida
+    reconocida = False  
     while True:
         ret, frame = cap.read()
         if not ret:
@@ -72,7 +70,7 @@ def recognize(userValidate, validation):
                         cv2.destroyAllWindows()
                         usuario.cargar_histogramas(imagePaths[result[0]])
                         
-                        reconocida = True  # Marcar como reconocida
+                        reconocida = True
 
                     else:
                         print("error")
@@ -82,17 +80,7 @@ def recognize(userValidate, validation):
                         
                 else:
                     return
-                #threading.Thread(target=User, daemon=True).start() # type: ignore
-                #user_profile_window = UserProfileWindow(interfaz, imagePaths[result[0]])
-                
-                
-                print("Si")
-                print("no")
-                #userFound()
-                
 
-                #cv2.destroyAllWindows()
-                #break  # Salir del bucle de detección de rostros
             
             else:
                 print("error")
@@ -101,20 +89,17 @@ def recognize(userValidate, validation):
                 cv2.destroyAllWindows()
                 #cv2.putText(frame, 'Desconocido', (x, y - 20), 2, 0.8, (0, 0, 255), 1, cv2.LINE_AA)
                 #cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
-    
 
         if reconocida:
-            print("que pasa con la interfaz")
+            
             break  # Salir del bucle principal
-        
-        
-
+   
         cv2.imshow('frame', frame)
         k = cv2.waitKey(1)
-        if k == 27:  # Presionar 'ESC' para salir manualmente
+        if k == 27:  # 'ESC'
             break
 
-    # Fuera del bucle principal
+    # bucle principal
     cap.release()
     cv2.destroyAllWindows()
 

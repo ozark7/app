@@ -10,9 +10,7 @@ PRIMARY_COLOR = "#FFA45B"
 SECONDARY_COLOR = "#0078d4"
 
 def cargar_histogramas(usuario):
-    """
-    Cargar y mostrar los histogramas (documentos de texto) de la carpeta de un usuario específico.
-    """
+ 
     url = "../reconocimientoFacial/histograms/" + usuario
     carpeta_usuario = os.path.join("carpeta_histogramas", url)  
     if not os.path.exists(carpeta_usuario):
@@ -54,7 +52,7 @@ def cargar_histogramas(usuario):
         ventana1.destroy()
         messagebox.showinfo("Exito", "Espere unos momentos...")
 
-        # Crear la carpeta de imágenes si no existe
+        # carpeta de imágenes si no existe
         carpeta_imagenes = "imagenes_histogramas"
         
         # Crear la carpeta del usuario dentro de la carpeta principal de imágenes

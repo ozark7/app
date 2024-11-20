@@ -15,7 +15,7 @@ import pruebaReconocimiento
 PRIMARY_COLOR = "#ff9900"  # Naranja
 SECONDARY_COLOR = "#ffd966"  # Amarillo claro
 BACKGROUND_COLOR = "#ffffff"  # Blanco
-TEXT_COLOR = "#333333"  # Texto gris oscuro
+TEXT_COLOR = "#333333"  # gris oscuro
 
 # Ventana Principal
 class MainWindow(tk.Tk):
