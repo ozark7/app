@@ -3,7 +3,7 @@ from tkinter import messagebox
 import cv2
 import os
 import usuario
-import interfaz
+
 
 """
 def userFound():

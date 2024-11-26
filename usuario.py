@@ -11,14 +11,14 @@ SECONDARY_COLOR = "#ffd966"  # Amarillo claro
 BACKGROUND_COLOR = "#ffffff"  # Blanco
 TEXT_COLOR = "#333333"  # Texto gris oscuro
 
+
 def cargar_histogramas(usuario):
-    print("histogramas2")
     """
-    Cargar y mostrar los histogramas (documentos de texto) de la carpeta de un usuario específico.
+    Cargar y mostrar los histogramas (documentos de texto) de la carpeta de un usuario específico en lotes de 5.
     """
     url = "../reconocimientoFacial/histograms/" + usuario
     carpeta_usuario = url
-  
+
     if not os.path.exists(carpeta_usuario):
         print(f"La carpeta para el usuario '{usuario}' no existe.")
         return
@@ -29,7 +29,6 @@ def cargar_histogramas(usuario):
     ventana1.title(f"Histogramas de {usuario}")
     ventana1.configure(bg=BACKGROUND_COLOR)
 
-    
     # Centro la ventana en la pantalla
     ventana1.eval('tk::PlaceWindow %s center' % ventana1.winfo_toplevel())
 
@@ -52,123 +51,42 @@ def cargar_histogramas(usuario):
     canvas.pack(side="left", fill="both", expand=True)
     scrollbar.pack(side="right", fill="y")
 
-    # Lista para almacenar los datos de los histogramas
-    histogramas_datos = []
+    # Variables para control de paginación
+    archivos = [f for f in os.listdir(carpeta_usuario) if f.endswith(".txt")]
+    pagina_actual = 0
+    tamanio_pagina = 5
 
-    # Función para guardar las gráficas como imágenes en una carpeta
-    def guardar_imagenes():
-        
-        #ventana1.destroy()
-        messagebox.showinfo("Exito", "Espere unos momentos...")
+    # Función para mostrar los histogramas de la página actual
+    def mostrar_pagina():
+        for widget in scrollable_frame.winfo_children():
+            widget.destroy()
 
-        # Crear la carpeta de imágenes si no existe
-        carpeta_imagenes = "imagenes_histogramas"
-        
-        # Crear la carpeta del usuario dentro de la carpeta principal de imágenes
-        carpeta_usuario_imagenes = os.path.join(carpeta_imagenes, usuario)
-        if not os.path.exists(carpeta_usuario_imagenes):
-            os.makedirs(carpeta_usuario_imagenes)
-            print(f"Carpeta del usuario '{usuario}' creada dentro de '{carpeta_imagenes}'.")
+        inicio = pagina_actual * tamanio_pagina
+        fin = inicio + tamanio_pagina
+        archivos_pagina = archivos[inicio:fin]
 
-        # Leer los archivos de histogramas y mostrar
-        for i, archivo in enumerate(os.listdir(carpeta_usuario)):
-            if archivo.endswith(".txt"):  # Suponiendo que los histogramas están guardados como archivos .txt
-                ruta = os.path.join(carpeta_usuario, archivo)
-
-                # Abrir y leer el contenido del archivo de texto
-                with open(ruta, 'r') as file:
-                    contenido = file.read()
-                    # Convertir el contenido en una lista de valores (suponiendo que son números decimales)
-                    valores = [float(val) for val in contenido.split()]
-
-                # Crear la gráfica
-                plt.figure(figsize=(6, 4))
-                plt.bar(range(len(valores)), valores, color="skyblue")
-                plt.title(archivo)
-                plt.xlabel("Índice")
-                plt.ylabel("Valor")
-
-                # Guardar la imagen en la carpeta del usuario
-                nombre_imagen = os.path.join(carpeta_usuario_imagenes, f"{archivo.replace('.txt', '')}.png")  # Ruta completa
-                plt.savefig(nombre_imagen, format="png")  # Guardar la gráfica como PNG
-                print(f"Imagen guardada como {nombre_imagen}")
-                
-                # Limpiar la figura para la siguiente
-                plt.close()
-
-    # Función para crear una gráfica de línea mostrando cómo fluctúan los valores
-    def graficar_linea():
-        plt.figure(figsize=(6, 4))
-        all_values = []
-
-        # Leer los archivos de histogramas y extraer los valores
-        for archivo in os.listdir(carpeta_usuario):
-            if archivo.endswith(".txt"):
-                ruta = os.path.join(carpeta_usuario, archivo)
-
-                # Abrir y leer el contenido del archivo de texto
-                with open(ruta, 'r') as file:
-                    contenido = file.read()
-                    # Convertir el contenido en una lista de valores (suponiendo que son números decimales)
-                    valores = [float(val) for val in contenido.split()]
-                    all_values.extend(valores)  # Agregar estos valores a la lista global
-
-        # Crear la gráfica de línea
-        plt.plot(all_values, marker='o', color='b', linestyle='-', markersize=4)
-        plt.title(f"Fluctuación de los Valores de los Histogramas de {usuario}")
-        plt.xlabel("Índice")
-        plt.ylabel("Valor")
-        plt.grid(True)
-
-        # Mostrar la gráfica
-        plt.show()
-
-    # Botones
-    btn_guardar_imagenes = ttk.Button(
-        ventana1, 
-        text="Generar Imágenes de Histogramas", 
-        command=guardar_imagenes,
-        style="TButton"
-    )
-    btn_guardar_imagenes.pack(pady=20, side="left", padx=10)
-
-    btn_graficar_linea = ttk.Button(
-        ventana1, 
-        text="Generar Gráfica de Fluctuación de Valores", 
-        command=graficar_linea,
-        style="TButton"
-    )
-    btn_graficar_linea.pack(pady=20, side="left", padx=10)
-
-    # Leer los archivos de histogramas y mostrar en la interfaz
-    for archivo in os.listdir(carpeta_usuario):
-        if archivo.endswith(".txt"):  
+        for archivo in archivos_pagina:
             ruta = os.path.join(carpeta_usuario, archivo)
 
-            # Abrir y leer el contenido del archivo de texto
             with open(ruta, 'r') as file:
                 contenido = file.read()
-                # Convertir el contenido en una lista de valores (suponiendo que son números decimales)
                 valores = [float(val) for val in contenido.split()]
 
             # Crear un marco para cada archivo
             frame = ttk.Frame(scrollable_frame, style="TFrame")
             frame.pack(pady=10, padx=10, fill="x")
 
-            # Etiqueta para el nombre del archivo
             lbl_nombre = tk.Label(frame, text=archivo, font=("Arial", 12, "bold"), fg="#0078d4")
             lbl_nombre.pack()
 
-            # Crear un gráfico de barras utilizando Canvas de Tkinter
             canvas_histograma = tk.Canvas(frame, width=400, height=300, bg="white")
             canvas_histograma.pack(pady=10)
 
-            # Determinar el tamaño de las barras (cada barra será un rectángulo)
+            # Crear gráfico de barras
             max_valor = max(valores)
             ancho_barra = 30
             espacio_barras = 10
             for i, valor in enumerate(valores):
-                # Dibujar la barra correspondiente
                 canvas_histograma.create_rectangle(
                     i * (ancho_barra + espacio_barras),  # x1
                     300 - (valor / max_valor) * 250,  # y1
@@ -176,6 +94,102 @@ def cargar_histogramas(usuario):
                     300,  # y2
                     fill="skyblue"
                 )
-    
+
+    # Funciones para cambiar de página
+    def pagina_anterior():
+        nonlocal pagina_actual
+        if pagina_actual > 0:
+            pagina_actual -= 1
+            mostrar_pagina()
+
+    def pagina_siguiente():
+        nonlocal pagina_actual
+        if (pagina_actual + 1) * tamanio_pagina < len(archivos):
+            pagina_actual += 1
+            mostrar_pagina()
+
+    # Función para guardar las gráficas como imágenes en una carpeta
+    def guardar_imagenes():
+        messagebox.showinfo("Éxito", "Espere unos momentos...")
+        carpeta_imagenes = "imagenes_histogramas"
+        carpeta_usuario_imagenes = os.path.join(carpeta_imagenes, usuario)
+
+        if not os.path.exists(carpeta_usuario_imagenes):
+            os.makedirs(carpeta_usuario_imagenes)
+
+        for archivo in archivos:
+            ruta = os.path.join(carpeta_usuario, archivo)
+            with open(ruta, 'r') as file:
+                valores = [float(val) for val in file.read().split()]
+
+            plt.figure(figsize=(6, 4))
+            plt.bar(range(len(valores)), valores, color="skyblue")
+            plt.title(archivo)
+            plt.xlabel("Índice")
+            plt.ylabel("Valor")
+            nombre_imagen = os.path.join(carpeta_usuario_imagenes, f"{archivo.replace('.txt', '')}.png")
+            plt.savefig(nombre_imagen, format="png")
+            plt.close()
+
+        messagebox.showinfo("Éxito", "Imágenes guardadas correctamente.")
+
+    # Función para crear una gráfica de línea mostrando cómo fluctúan los valores
+    def graficar_linea():
+        plt.figure(figsize=(6, 4))
+        all_values = []
+
+        for archivo in archivos:
+            ruta = os.path.join(carpeta_usuario, archivo)
+            with open(ruta, 'r') as file:
+                valores = [float(val) for val in file.read().split()]
+                all_values.extend(valores)
+
+        plt.plot(all_values, marker='o', color='b', linestyle='-', markersize=4)
+        plt.title(f"Fluctuación de los Valores de los Histogramas de {usuario}")
+        plt.xlabel("Índice")
+        plt.ylabel("Valor")
+        plt.grid(True)
+        plt.show()
+
+    # Botones de navegación
+    btn_anterior = ttk.Button(
+        ventana1,
+        text="Página Anterior",
+        command=pagina_anterior,
+        style="TButton"
+    )
+    btn_anterior.pack(side="left", padx=10)
+
+    btn_siguiente = ttk.Button(
+        ventana1,
+        text="Página Siguiente",
+        command=pagina_siguiente,
+        style="TButton"
+    )
+    btn_siguiente.pack(side="right", padx=10)
+
+    # Botones para generar imágenes y gráficas
+    btn_guardar_imagenes = ttk.Button(
+        ventana1,
+        text="Generar Imágenes de Histogramas",
+        command=guardar_imagenes,
+        style="TButton"
+    )
+    btn_guardar_imagenes.pack(pady=20, side="left", padx=10)
+
+    btn_graficar_linea = ttk.Button(
+        ventana1,
+        text="Generar Gráfica de Fluctuación de Valores",
+        command=graficar_linea,
+        style="TButton"
+    )
+    btn_graficar_linea.pack(pady=20, side="left", padx=10)
+
+    # Mostrar la primera página
+    mostrar_pagina()
+
     ventana1.mainloop()
-#cargar_histogramas(usuario="pepi")
+
+
+# Prueba de la función (descomentar para probar)
+#cargar_histogramas(usuario="silvia")

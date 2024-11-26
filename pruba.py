@@ -220,23 +220,23 @@ class RegisterWindow(tk.Toplevel):
             entrenandoRF.entrenando()
             
     def video_user(self):
-        usuario = self.input_user.get()
         contra = self.input_password.get()
+        usuario = self.input_user.get()
 
-        # Verificar que los campos no estén vacíos
         if not usuario or not contra:
             messagebox.showwarning("Error", "Por favor, complete todos los campos.")
             return
 
-        # Ruta donde se almacenan los datos de los usuarios
-        user_path = os.path.join("./credentials", usuario)
+       
+        
+        user_path = os.path.join("./app/credentials", usuario)
 
         # Verificar si el usuario ya existe
         if os.path.exists(user_path):
-            messagebox.showerror("Error", "El usuario ya existe. Por favor, elija otro nombre o utilice otro método.")
+            messagebox.showerror("Error", "El usuario ya existe. Por favor, elija otro nombre.")
             return
 
-        # Crear carpeta para el usuario y guardar credenciales
+        # Crear carpeta para el usuario
         try:
             os.makedirs(user_path)
             user_data = {
@@ -245,17 +245,18 @@ class RegisterWindow(tk.Toplevel):
             }
             with open(os.path.join(user_path, "info.json"), "w") as file:
                 json.dump(user_data, file)
+            print(f"Usuario '{usuario}' registrado con éxito.")
+            messagebox.showinfo("Registro", "Usuario registrado exitosamente.")
         except Exception as e:
             messagebox.showerror("Error", f"No se pudo registrar el usuario: {str(e)}")
-            return
 
-        # Abrir el explorador de archivos y seleccionar un archivo de video
+        # Abrir el explorador de archivos 
         file_path = filedialog.askopenfilename(
             title="Seleccionar archivo de video",  # Título del explorador de archivos
             filetypes=(("Archivos de video", "*.mp4;*.avi;*.mov"), ("Todos los archivos", "*.*"))  # Filtros para los tipos de archivo
         )
 
-        # Verificar si se seleccionó un archivo
+        # Verificar 
         if file_path:
             print(f"Archivo seleccionado: {file_path}")
             # Procesar el video para capturar los datos faciales
@@ -270,22 +271,6 @@ class RegisterWindow(tk.Toplevel):
 
         print(file_path)
 
-    """def video_user(self):
-        usuario = self.input_user.get()
-        # Abrir el explorador de archivos y seleccionar un archivo
-        file_path = filedialog.askopenfilename(
-            title="Seleccionar archivo de video",  # Título del explorador de archivos
-            filetypes=(("Archivos de video", "*.mp4;*.avi;*.mov"), ("Todos los archivos", "*.*"))  # Filtros para los tipos de archivo
-        )
-
-        # Verifica si el usuario seleccionó un archivo (no presionó Cancelar)
-        if file_path:
-            print(f"Archivo seleccionado: {file_path}")
-            # Aquí puedes agregar el código para procesar el archivo seleccionado, por ejemplo, abrir el video.
-            capturandoRostros.prueba(usuario, camara=False, video=(file_path))
-        else:
-            print("No se seleccionó ningún archivo")
-        print(file_path)"""
 
     def register_user(self):
         contra = self.input_password.get()
@@ -295,7 +280,7 @@ class RegisterWindow(tk.Toplevel):
             messagebox.showwarning("Error", "Por favor, complete todos los campos.")
             return
 
-        # Ruta donde se almacenan los datos de los usuarios (por ejemplo, la carpeta "data")
+       
         
         user_path = os.path.join("./app/credentials", usuario)
 
